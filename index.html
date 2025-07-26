@@ -1,0 +1,42 @@
+<details>
+<summary>👉 BẤM ĐỂ HIỆN CODE HTML</summary>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Pick Tướng Liên Quân</title>
+</head>
+<body>
+  <h2>Pick tướng trong 15 giây</h2>
+  <label>Vị trí:
+    <select id="role">
+      <option value="rừng">Rừng</option>
+      <option value="giữa">Giữa</option>
+      <option value="trợ thủ">Trợ thủ</option>
+      <option value="xạ thủ">Xạ thủ</option>
+      <option value="đấu sĩ">Đấu sĩ</option>
+    </select>
+  </label>
+  <label>Tướng team mình: <input id="ally"/></label>
+  <label>Tướng team địch: <input id="enemy"/></label>
+  <button onclick="pick()">Gợi ý!</button>
+  <pre id="result">...</pre>
+<script>
+async function pick() {
+  const role = document.getElementById('role').value;
+  const ally = document.getElementById('ally').value;
+  const enemy = document.getElementById('enemy').value;
+  const prompt = `Tôi chơi ${role}. Team tôi có ${ally}. Team địch có ${enemy}. Hãy gợi ý 2 tướng tốt nhất theo meta Liên Quân hiện tại.`;
+  document.getElementById('result').textContent = 'Đang xử lý...';
+  const res = await fetch('/api/pick', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ prompt })
+  });
+  const data = await res.json();
+  document.getElementById('result').textContent = data.answer;
+}
+</script></details>
+
+</body>
+</html>
